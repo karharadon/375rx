@@ -24,4 +24,20 @@ public class ConfigProperties {
         }
         return value;
     }
+
+    public static void setProperty(String name) {
+        Properties properties = new Properties();
+        try {
+            properties.load(ConfigProperties.class.getResourceAsStream(PROP_FILE));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        String value = null;
+
+        if (name != null) {
+            value = properties.getProperty(name);
+        }
+
+    }
 }

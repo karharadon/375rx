@@ -17,6 +17,7 @@ public class MainPage extends AbstractPage{
         selectFromDD(fieldLocation,getProperty("location"));
         selectFromDD(fieldCountry,getProperty("country"));
         clickButonWithJS(buttonIndustry);
+       // clickButonWithJS(checkboxIT);
         clickButonWithJS(checkboxSoftWare);
         waitButtonAndClick(buttonAdvancedSearch);
     }

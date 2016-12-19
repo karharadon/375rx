@@ -18,35 +18,46 @@ import static tests.BaseTest.getWebDriver;
 public class ResultPage extends AbstractPage {
 
     private int pagesAmount() {
-        int profiles = (Integer.parseInt(resultAmount.getText()));
-        int pagesAmount;
+        String profilesString = resultAmount.getText();
+        String p = null;
+        if (profilesString.contains(",")) {
+            p = profilesString.replaceAll(",", ".");
+            System.out.println(p);
+        }
+        double profiles = Double.parseDouble(p) * 1000;
+        double pagesAmount;
         if (profiles % 10 == 0) {
             pagesAmount = profiles / 10;
         } else {
             pagesAmount = (profiles / 10) + 1;
         }
-        return pagesAmount;
+        return (int) pagesAmount;
+    }
+
+    private void navigateBack() {
+        getWebDriver().navigate().back();
+        waitForPageLoad(getWebDriver());
     }
 
     public void addConnects() {
-        //  getWebDriver().get("https://www.linkedin.com/vsearch/p?title=recruiter&openAdvancedForm=true&titleScope=C&locationType=I&countryCode=ua&f_I=96&rsid=1542012251482149029842&orig=ADVS&page_num=10&pt=people&openFacets=N,G,CC,I");
+        getWebDriver().get("https://www.linkedin.com/vsearch/p?title=project%20manager&openAdvancedForm=true&titleScope=C&locationType=I&countryCode=ua&f_I=4&rsid=1542012251482184707324&orig=ADVS&page_num=38&pt=people");
+        waitForPageLoad(getWebDriver());
         if (waitWhenClickable(strong).isDisplayed()) {
-            for (int page = 10; page <= pagesAmount(); page++) {
+            for (int page = 39; page <= pagesAmount(); page++) {
                 for (WebElement actionButton : actionButtons) {
                     if (actionButton.getText().equals("Connect")) {
                         try {
                             waitButtonAndClick(actionButton);
-                            try {
-                                if (buttonInvite.isDisplayed()) {
-                                    getWebDriver().navigate().back();
-                                    waitForPageLoad(getWebDriver());
-                                }
-                            } catch (NoSuchElementException e) {
-                                //it should throws NoSuchElementExeption
-                            }
                         } catch (StaleElementReferenceException e) {
-                            System.out.println("Stale elemen exeption was caught");
-                            waitButtonAndClick(actionButton);
+                            try {
+                                waitButtonAndClick(actionButton);
+                            } catch (StaleElementReferenceException e1) {
+                                if (buttonInvite.isDisplayed()) {
+                                    navigateBack();
+                                }else{
+                                    e1.printStackTrace();
+                                }
+                            }
                         }
                     }
                 }
@@ -54,7 +65,7 @@ public class ResultPage extends AbstractPage {
                         "']"));
                 clickButonWithJS(waitWhenClickable(nextPage));
                 try {
-                    Thread.sleep(2000);
+                    Thread.sleep(3000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }

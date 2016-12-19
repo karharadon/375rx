@@ -11,7 +11,7 @@ import static tests.BaseTest.getWebDriver;
 /**
  * Created by lastochkin on 12/16/16.
  */
-public class UITests {
+public class UITests extends BaseTest {
     private LoginPage loginPage = PageFactory.initElements(getWebDriver(), LoginPage.class);
     private MainPage mainPage = PageFactory.initElements(getWebDriver(), MainPage.class);
     private ResultPage resultPage = PageFactory.initElements(getWebDriver(), ResultPage.class);
@@ -25,8 +25,6 @@ public class UITests {
 
     @Test
     public void test(){
-        for(int i = 1; i <=10; i++){
-            System.out.println(i);
-        }
+
     }
 }

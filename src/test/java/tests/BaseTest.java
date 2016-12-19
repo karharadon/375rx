@@ -5,6 +5,9 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
+import org.testng.ITestResult;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.AfterSuite;
 
 import java.util.concurrent.TimeUnit;
 
@@ -17,8 +20,8 @@ public class BaseTest {
 
     public static WebDriver getWebDriver() {
         if (driver != null) {
-            return driver;}
-        else {
+            return driver;
+        } else {
             if (browser.equals("chrome")) {
                 driver = new ChromeDriver();
             }
@@ -36,4 +39,20 @@ public class BaseTest {
             }
             return driver;
         }
-}}
+
+
+    }
+
+    @AfterSuite(enabled = false)
+    public void setFailedPage(ITestResult result){
+        System.out.println("1");
+        if(ITestResult.FAILURE == result.getStatus()){
+            System.out.println("2");
+            System.out.println(result.getParameters().toString());
+            System.out.println("3");
+            //ConfigProperties.setProperty(result.getParameters().toString());
+
+        }
+        System.out.println("4");
+    }
+}
