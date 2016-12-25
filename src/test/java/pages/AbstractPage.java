@@ -39,7 +39,7 @@ class AbstractPage {
             new WebDriverWait(getWebDriver(), waitWebElem).until(ExpectedConditions.elementToBeClickable(element));
         } catch (Exception e){
             e.printStackTrace();
-            System.out.println("Can't click webelement"+element);
+            System.out.println("Can't click webelement" + element);
         }
         return element;
     }
@@ -57,4 +57,6 @@ class AbstractPage {
     void clickButonWithJS(WebElement elem){
         ((JavascriptExecutor)getWebDriver()).executeScript("arguments[0].click();" , elem);
     }
+
+   // String takeThisPage = "https://www.linkedin.com/vsearch/p?title=" + getProperty("title") + "&openAdvancedForm=true&titleScope=C&locationType=I&countryCode=ua&f_I=4,96&rsid=1542012251482358388713&orig=ADVS&page_num=" + getProperty("startFromThisPage") + "&pt=people&f_N=S&openFacets=N,G,CC,I";
 }

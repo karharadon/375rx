@@ -6,6 +6,7 @@ import pages.LoginPage;
 import pages.MainPage;
 import pages.ResultPage;
 
+import static helpers.ConfigProperties.getProperty;
 import static tests.BaseTest.getWebDriver;
 
 /**
@@ -24,7 +25,13 @@ public class UITests extends BaseTest {
     }
 
     @Test
-    public void test(){
+    public void fillFields(){
+        loginPage.login(getWebDriver());
+        mainPage.advancedSearch();
+    }
 
+    @Test
+    public void test(){
+        mainPage.testString();
     }
 }

@@ -1,81 +1,98 @@
 package pages;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindAll;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
+import org.openqa.selenium.support.PageFactory;
 
 import java.util.List;
 
+import static helpers.ConfigProperties.getProperty;
 import static tests.BaseTest.getWebDriver;
 
 /**
  * Created by lastochkin on 12/17/16.
  */
 public class ResultPage extends AbstractPage {
-
-    private int pagesAmount() {
-        String profilesString = resultAmount.getText();
-        String p = null;
-        if (profilesString.contains(",")) {
-            p = profilesString.replaceAll(",", ".");
-            System.out.println(p);
-        }
-        double profiles = Double.parseDouble(p) * 1000;
-        double pagesAmount;
-        if (profiles % 10 == 0) {
-            pagesAmount = profiles / 10;
-        } else {
-            pagesAmount = (profiles / 10) + 1;
-        }
-        return (int) pagesAmount;
-    }
-
-    private void navigateBack() {
-        getWebDriver().navigate().back();
-        waitForPageLoad(getWebDriver());
-    }
-
     public void addConnects() {
-        getWebDriver().get("https://www.linkedin.com/vsearch/p?title=project%20manager&openAdvancedForm=true&titleScope=C&locationType=I&countryCode=ua&f_I=4&rsid=1542012251482184707324&orig=ADVS&page_num=38&pt=people");
+        int startFromThisPage = Integer.parseInt(getProperty("startFromThisPage"));
+        boolean isActualResults = waitWhenClickable(strong).isDisplayed();
         waitForPageLoad(getWebDriver());
-        if (waitWhenClickable(strong).isDisplayed()) {
-            for (int page = 39; page <= pagesAmount(); page++) {
-                for (WebElement actionButton : actionButtons) {
-                    if (actionButton.getText().equals("Connect")) {
-                        try {
-                            waitButtonAndClick(actionButton);
-                        } catch (StaleElementReferenceException e) {
-                            try {
-                                waitButtonAndClick(actionButton);
-                            } catch (StaleElementReferenceException e1) {
-                                if (buttonInvite.isDisplayed()) {
-                                    navigateBack();
-                                }else{
-                                    e1.printStackTrace();
-                                }
-                            }
-                        }
-                    }
+        if (isActualResults) {
+            System.out.println("Pages amount = " + pagesAmount());
+            for (int currentPage = startFromThisPage; currentPage <= pagesAmount(); currentPage++) {
+                System.out.println("Current page:"+ currentPage);
+                WebElement nextPage = null;
+                if (currentPage < pagesAmount()) {
+                    nextPage = getWebDriver().findElement(By.cssSelector("a.page-link[title='Page " + (currentPage + 1)
+                            + "']"));
                 }
-                WebElement nextPage = getWebDriver().findElement(By.cssSelector("a.page-link[title='Page " + page +
-                        "']"));
-                clickButonWithJS(waitWhenClickable(nextPage));
-                try {
-                    Thread.sleep(3000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+                clickAllAddingButtons();
+                if (currentPage < pagesAmount()) {
+                    clickButonWithJS(waitWhenClickable(nextPage));
+                    threadSleep(3000);
                 }
             }
-
         } else {
             System.out.println("Preferences for advanced search are not active");
         }
     }
 
+    private int pagesAmount() {
+        String profilesString = resultAmount.getText();
+        String p;
+        int profilesAmount;
+        int pagesAmount;
+
+        if (profilesString.contains(",")) {
+            p = profilesString.replaceAll(",", ".");
+            profilesAmount = (int) Double.parseDouble(p) * 1000;
+        } else {
+            profilesAmount = Integer.parseInt(profilesString);
+        }
+
+        if (profilesAmount % 10 == 0) {
+            pagesAmount = profilesAmount / 10;
+        } else {
+            pagesAmount = (profilesAmount / 10) + 1;
+        }
+        return pagesAmount;
+    }
+
+    private void navigateBack() {
+        getWebDriver().navigate().back();
+        waitForPageLoad(getWebDriver());
+        System.out.println("Navigate back!");
+    }
+
+    private void clickAllAddingButtons() {
+        for (WebElement actionButton : actionButtons) {
+            try {
+                if (actionButton.getText().equals("Connect")) {
+                    waitButtonAndClick(actionButton);
+                    System.out.println("Blue button was clicked.");
+                }
+            } catch (StaleElementReferenceException e) {
+                if (buttonInvite.isDisplayed()) {
+                    //TODO
+                } else {
+                    System.out.println("Can't click" + actionButton + ". StaleElementReferenceException");
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    private void threadSleep(int milisec) {
+        try {
+            Thread.sleep(milisec);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
 
     @FindAll(@FindBy(how = How.CSS, using = "div.srp-actions.blue-button>a"))
     private List<WebElement> actionButtons;
@@ -91,6 +108,4 @@ public class ResultPage extends AbstractPage {
 
     @FindBy(how = How.CSS, using = "div.search-info>p>strong")
     private WebElement resultAmount;
-
-
 }
