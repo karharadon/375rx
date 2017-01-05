@@ -5,16 +5,17 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
-import org.testng.ITestResult;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.AfterSuite;
+import org.openqa.selenium.support.PageFactory;
+import pages.LoginPage;
+import pages.MainPage;
+import pages.ResultPage;
 
 import java.util.concurrent.TimeUnit;
 
-/**
- * Created by lastochkin on 12/16/16.
- */
 public class BaseTest {
+    protected LoginPage loginPage = PageFactory.initElements(getWebDriver(), LoginPage.class);
+    protected MainPage mainPage = PageFactory.initElements(getWebDriver(), MainPage.class);
+    protected ResultPage resultPage = PageFactory.initElements(getWebDriver(), ResultPage.class);
     private static WebDriver driver;
     private static String browser = ConfigProperties.getProperty("browser");
 
@@ -30,7 +31,7 @@ public class BaseTest {
                         "/src/test/resources/drivers/geckodriver");
                 driver = new FirefoxDriver();
             }
-            if (browser.equals("internetExplorer")) {
+            if (browser.equals("internetExplorer")) {  //TODO install driver and check this option
                 driver = new InternetExplorerDriver();
             }
             if (driver != null) {
@@ -41,16 +42,4 @@ public class BaseTest {
             return driver;
         }
     }
-/*
-    @AfterSuite(enabled = false)
-    public void setFailedPage(ITestResult result) {
-        System.out.println("1");
-        if (ITestResult.FAILURE == result.getStatus()) {
-            System.out.println("2");
-            System.out.println(result.getParameters().toString());
-            System.out.println("3");
-            //ConfigProperties.setProperty(result.getParameters().toString());
-        }
-        System.out.println("4");
-    }*/
 }

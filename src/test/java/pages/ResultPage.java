@@ -6,16 +6,12 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindAll;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
-import org.openqa.selenium.support.PageFactory;
 
 import java.util.List;
 
 import static helpers.ConfigProperties.getProperty;
 import static tests.BaseTest.getWebDriver;
 
-/**
- * Created by lastochkin on 12/17/16.
- */
 public class ResultPage extends AbstractPage {
     public void addConnects() {
         int startFromThisPage = Integer.parseInt(getProperty("startFromThisPage"));
@@ -24,7 +20,7 @@ public class ResultPage extends AbstractPage {
         if (isActualResults) {
             System.out.println("Pages amount = " + pagesAmount());
             for (int currentPage = startFromThisPage; currentPage <= pagesAmount(); currentPage++) {
-                System.out.println("Current page:"+ currentPage);
+                System.out.println("Current page:" + currentPage);
                 WebElement nextPage = null;
                 if (currentPage < pagesAmount()) {
                     nextPage = getWebDriver().findElement(By.cssSelector("a.page-link[title='Page " + (currentPage + 1)
@@ -62,12 +58,6 @@ public class ResultPage extends AbstractPage {
         return pagesAmount;
     }
 
-    private void navigateBack() {
-        getWebDriver().navigate().back();
-        waitForPageLoad(getWebDriver());
-        System.out.println("Navigate back!");
-    }
-
     private void clickAllAddingButtons() {
         for (WebElement actionButton : actionButtons) {
             try {
@@ -77,7 +67,7 @@ public class ResultPage extends AbstractPage {
                 }
             } catch (StaleElementReferenceException e) {
                 if (buttonInvite.isDisplayed()) {
-                    //TODO
+                    //TODO write method which will continue test from next result page
                 } else {
                     System.out.println("Can't click" + actionButton + ". StaleElementReferenceException");
                     e.printStackTrace();

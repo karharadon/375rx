@@ -11,9 +11,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import static helpers.ConfigProperties.getProperty;
 import static tests.BaseTest.getWebDriver;
 
-/**
- * Created by lastochkin on 12/16/16.
- */
 class AbstractPage {
 
     private final int waitWebElem = Integer.parseInt(getProperty("waitWebElem"));
@@ -37,14 +34,14 @@ class AbstractPage {
     WebElement waitWhenClickable(WebElement element) {
         try {
             new WebDriverWait(getWebDriver(), waitWebElem).until(ExpectedConditions.elementToBeClickable(element));
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             System.out.println("Can't click webelement" + element);
         }
         return element;
     }
 
-    void waitButtonAndClick(WebElement element){
+    void waitButtonAndClick(WebElement element) {
         waitWhenClickable(element);
         element.click();
     }
@@ -54,9 +51,7 @@ class AbstractPage {
         select.selectByVisibleText(text);
     }
 
-    void clickButonWithJS(WebElement elem){
-        ((JavascriptExecutor)getWebDriver()).executeScript("arguments[0].click();" , elem);
+    void clickButonWithJS(WebElement elem) {
+        ((JavascriptExecutor) getWebDriver()).executeScript("arguments[0].click();", elem);
     }
-
-   // String takeThisPage = "https://www.linkedin.com/vsearch/p?title=" + getProperty("title") + "&openAdvancedForm=true&titleScope=C&locationType=I&countryCode=ua&f_I=4,96&rsid=1542012251482358388713&orig=ADVS&page_num=" + getProperty("startFromThisPage") + "&pt=people&f_N=S&openFacets=N,G,CC,I";
 }
