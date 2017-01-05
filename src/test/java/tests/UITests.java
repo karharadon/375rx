@@ -18,20 +18,9 @@ public class UITests extends BaseTest {
     private ResultPage resultPage = PageFactory.initElements(getWebDriver(), ResultPage.class);
 
     @Test
-    public void addNewContacts(){
+    public void addNewContacts() {
         loginPage.login(getWebDriver());
         mainPage.advancedSearch();
         resultPage.addConnects();
-    }
-
-    @Test
-    public void fillFields(){
-        loginPage.login(getWebDriver());
-        mainPage.advancedSearch();
-    }
-
-    @Test
-    public void test(){
-        mainPage.testString();
     }
 }

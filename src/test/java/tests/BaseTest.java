@@ -26,7 +26,8 @@ public class BaseTest {
                 driver = new ChromeDriver();
             }
             if (browser.equals("firefox")) {
-                System.setProperty("webdriver.gecko.driver", "/home/lastochkin/geckodriver");
+                System.setProperty("webdriver.gecko.driver", System.getProperty("user.dir") +
+                        "/src/test/resources/drivers/geckodriver");
                 driver = new FirefoxDriver();
             }
             if (browser.equals("internetExplorer")) {
@@ -39,20 +40,17 @@ public class BaseTest {
             }
             return driver;
         }
-
-
     }
-
+/*
     @AfterSuite(enabled = false)
-    public void setFailedPage(ITestResult result){
+    public void setFailedPage(ITestResult result) {
         System.out.println("1");
-        if(ITestResult.FAILURE == result.getStatus()){
+        if (ITestResult.FAILURE == result.getStatus()) {
             System.out.println("2");
             System.out.println(result.getParameters().toString());
             System.out.println("3");
             //ConfigProperties.setProperty(result.getParameters().toString());
-
         }
         System.out.println("4");
-    }
+    }*/
 }

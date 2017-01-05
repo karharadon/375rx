@@ -49,14 +49,6 @@ public class MainPage extends AbstractPage {
         }
     }
 
-    public void testString() {
-        System.out.println("https://www.linkedin.com/vsearch/p?" + keywords() + lastName() + title() +
-                "openAdvancedForm=true&" + titleScope() +
-                "locationType=I&countryCode=ua&f_I=4,6,96&rsid=1542012251482615949571&orig=ADVS&page_num=" +
-                startFromThisPage + "&pt=people&f_N=S,A");
-
-    }
-
     private String title() {
         if (!title.equals("null")) {
             return "title=" + title + "&";
