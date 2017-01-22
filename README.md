@@ -8,4 +8,3 @@ block account. So if test fail, you should change variable "startFromThisPage" i
 "failed page + 1"
 
 PROFILE LANGUAGE MUST BE ENGLISH!!!
-I DIDN'T USE THIS SCRIPT WITH SIMPLE PROFILE. Maybe it works. I TOOK PREMIUM ACCOUNT(1 free month, "recruiter light").
